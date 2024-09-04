@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 
 '''
-This code calculates and visualizes how the Instantaneous Field of View (IFOV) changes
+This module calculates and visualizes how the Instantaneous Field of View (IFOV) changes
 for both positive and negative obstacles at varying distances from a camera placed at a
 certain height. It simulates the IFOV for obstacles of different sizes, showing how the
 field of view and the number of pixels occupied by the obstacle change as the stopping
