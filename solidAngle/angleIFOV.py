@@ -11,12 +11,6 @@ distance increases. Additionally, the code visualizes how the elevation angle de
 with increasing stopping distance for different camera heights. These visualizations are
 helpful for understanding the relationship between obstacle size, distance, and camera
 view in applications such as obstacle detection and machine vision systems
-
-Cuantos pixeles detectan los algoritmos de detecion de objetos en funcion de la distancia?
-(no deep learning 7pixeles)
-que tamaño debo ocupar en el sensor para que sea detectado? 
-Leer IFOV Y StoppingDistance
-
 '''
 
 # Define variables
@@ -43,7 +37,7 @@ plt.xscale('log')
 plt.yscale('log')
 plt.grid(True, which="both", linestyle="--", alpha=0.5)
 plt.title('Positive Obstacle IFOV')
-plt.xlabel('Lookahead Distance [m]')
+plt.xlabel('Sensor distance to the scene [m]')
 plt.ylabel('IFOV [milliradians]')
 plt.ylim([10**-4, 10**3])
 hp_labels = [f'{h:.1f}' for h in hp]
@@ -62,7 +56,7 @@ plt.xscale('log')
 plt.yscale('log')
 plt.grid(True, which="both", linestyle="--", alpha=0.5)
 plt.title('Negative Obstacle IFOV')
-plt.xlabel('Lookahead Distance [m]')
+plt.xlabel('Sensor distance to the scene [m]')
 plt.ylabel('IFOV [milliradians]')
 plt.ylim([10**-4, 10**3])
 wn_labels = [f'{w:.1f}' for w in wn]
@@ -84,7 +78,7 @@ plt.xscale('log')
 plt.yscale('log')
 plt.grid(True, which="both", linestyle="--", alpha=0.5)
 plt.title('Positive Obstacle Number of Pixels')
-plt.xlabel('Lookahead Distance [m]')
+plt.xlabel('Sensor distance to the scene [m]')
 plt.ylabel('Number of pixels filled')
 plt.ylim([10**-1, 10**3])
 plt.xlim([min(stoppingDistance), max(stoppingDistance)])

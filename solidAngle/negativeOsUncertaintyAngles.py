@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 '''
 The code calculates and visualizes the uncertainty in estimating the size of a negative
 obstacle (width) at different elevation angles, considering a fixed camera height.
@@ -42,7 +41,7 @@ x = wn * 100
 x2 = np.concatenate([x, x[::-1]])
 inBetween = np.concatenate([curve1, curve2[::-1]])
 plt.fill(x2, inBetween, color='blue', alpha=0.5)
-plt.savefig('Negative_Obstacle_Uncertainty.png', dpi=300)
+#plt.savefig('Negative_Obstacle_Uncertainty.png', dpi=300)
 plt.show()
 
 # Plot width vs heights
@@ -56,5 +55,5 @@ plt.xlabel('Negative Obstacle Height [cm]')
 plt.ylabel('Uncertainty [%]')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('Negative_Obstacle_Height_vs_Width.png', dpi=300)
+#plt.savefig('Negative_Obstacle_Height_vs_Width.png', dpi=300)
 plt.show()
