@@ -25,8 +25,6 @@ which light is accepted.
 
 The etendue is a limiting factor for the throughput of the monochromator.
 A monochromator with smaller A and ? will have smaller etendue.
-
-why ?
 '''
 numericalAperture = 1 / (2 * f_number) # numerical aperture
 omega = np.pi * (numericalAperture)**2 # solid angle in steradians
@@ -52,6 +50,8 @@ for i, d in enumerate(distances):
     Gr_Sam_Dis[i] = (d * pixSize) / (f * imageHeight);
     # Instantaneous Field of View (IFoV) in meters
     IFoV_distance[i] = 2 * (d * np.tan(np.deg2rad(AoV / 2)))
+
+print(AoV)
 
 # Plotting
 # Plotting DOF
