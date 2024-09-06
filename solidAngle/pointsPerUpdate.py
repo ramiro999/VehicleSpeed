@@ -52,16 +52,109 @@ for v in range(1,101):
 
 #HFOV = np.kron(np.deg2rad(25), np.ones(100)) # Horizontal Field of View 
 
-# Plot
+# Compute VFOV (Vertical Field of View)
+hc = 2 # height of camera (2 m)
+thetaSlope = np.deg2rad(15) # maximum angle of slope (15 degrees)
+thetaMin = np.arctan(hc / lookahead_dist_stop) # angle below horizon as determined by stopping distance
+thetaMax = np.arctan(hc / d_offset) # angle below horizon as determined by baseline B (length of car)
+
+VFOV = 2 * thetaSlope + np.minimum(thetaMin, thetaMax) # Vertical Field of View  # Pregunta aqui, como puso el VFOV
+
+# VFOV = np.kron(np.deg2rad(25), np.ones(100)) # Vertical Field of View
+
+# Plot FOV
 plt.figure()
-plt.plot(v_mph, HFOV * 10**3, linewidth=2)
+plt.plot(v_mph, HFOV * 10**3, linewidth=2, label= 'HFOV [miliradians]')
+plt.plot(v_mph, VFOV * 10**3, linewidth=2, label= 'VFOV [miliradians]')
 plt.xlabel('Vehicle speed [mph]')
-plt.ylabel('Horizontal Field of View [miliradians]')
-plt.title('Horizontal Field of View vs Vehicle Speed')
+plt.ylabel('Field of View [miliradians]')
+plt.title('Field of View vs Vehicle Speed')
 plt.grid()
+plt.legend()
+#plt.savefig('HFOV_VFOV_Miliradians.png', dpi=300)
 plt.show()
 
-# Save data
-np.save('HFOV.npy', HFOjson)
+# Plot FOV 2 
+plt.figure()
+plt.plot(v_mph, np.rad2deg(HFOV), linewidth=2, label= 'HFOV [degrees]')
+plt.plot(v_mph, np.rad2deg(VFOV), linewidth=2, label= 'VFOV [degrees]')
+plt.xlabel('Vehicle speed [mph]')
+plt.ylabel('Field of View [degrees]')
+plt.title('Field of View vs Vehicle Speed')
+plt.grid()
+plt.legend()
+#plt.savefig('HFOV_VFOV_Degrees.png', dpi=300)
+plt.show()
+
+# --------------- Compute IFOV (Instantaneous Field of View) ----------------
+hp = 0.1 # Positive obstacle height (in meters)
+wn = 0.95 # Negative obstacle width (in meters)
+
+IFOVp = np.arctan(hc / lookahead_dist_stop) - np.arctan((hc-hp) / lookahead_dist_stop) # Positive IFOV
+IFOVn = np.arctan(hc / lookahead_dist_stop) - np.arctan(hc / (lookahead_dist_stop + wn)) # Negative IFOV
+
+# Plot IFOV positive and negative milidiarands
+plt.figure()
+plt.plot(v_mph, (IFOVp * 10**3), linewidth=2, label= 'IFOV Positive [miliradians]')
+plt.plot(v_mph, (IFOVn * 10**3), linewidth=2, label= 'IFOV Negative [miliradians]')
+plt.xlabel('Vehicle speed [mph]')
+plt.ylabel('Instantaneous Field of View [miliradians]')
+plt.title('Instantaneous Field of View vs Vehicle Speed')
+plt.grid()
+plt.legend()
+plt.xscale('log')
+plt.yscale('log')
+#plt.savefig('IFOV_Positive_Negative.png', dpi=300)
+plt.show()
+
+# Plot IFOV positive and negative degrees
+plt.figure()
+plt.plot(v_mph, np.rad2deg(IFOVp), linewidth=2, label= 'IFOV Positive [degrees]')
+plt.plot(v_mph, np.rad2deg(IFOVn), linewidth=2, label= 'IFOV Negative [degrees]')
+plt.xlabel('Vehicle speed [mph]')
+plt.ylabel('Instantaneous Field of View [degrees]')
+plt.title('Instantaneous Field of View vs Vehicle Speed')
+plt.grid()
+plt.legend()
+plt.xscale('log')
+plt.yscale('log')
+#plt.savefig('IFOV_Positive_Negative_Degrees.png', dpi=300)
+plt.show()
 
 
+# Calculate the points per update (Points per Update)
+ppuPh = HFOV / IFOVp
+ppuPv = VFOV / IFOVp
+ppuNh = HFOV / IFOVn
+ppuNv = VFOV / IFOVn
+
+
+# Plot points per update for positive obstacles
+plt.figure()
+plt.plot(v_mph, ppuPh, linewidth=2, label='HFOV / IFOVp')
+plt.plot(v_mph, ppuPv, linewidth=2, label='VFOV / IFOVp')
+plt.xlabel('Vehicle speed [mph]')
+plt.ylabel('Points per update')
+plt.grid(True)
+plt.title('For positive obstacles')
+plt.legend(loc='upper left')
+plt.xscale('log')
+plt.yscale('log')
+plt.tight_layout()
+plt.savefig('ppuPh_Positives.png', dpi=300)
+plt.show()
+
+# Plot points per update for negative obstacles
+plt.figure()
+plt.plot(v_mph, ppuNh, linewidth=2, label='HFOV / IFOVn')
+plt.plot(v_mph, ppuNv, linewidth=2, label='VFOV / IFOVn')
+plt.xlabel('Vehicle speed [mph]')
+plt.ylabel('Points per update')
+plt.grid(True)
+plt.title('For negative obstacles')
+plt.legend(loc='upper left')
+plt.xscale('log')
+plt.yscale('log')
+plt.tight_layout()
+plt.savefig('ppuNh_Negatives.png', dpi=300)
+plt.show()

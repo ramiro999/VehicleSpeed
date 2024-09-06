@@ -11,14 +11,6 @@ distance increases. Additionally, the code visualizes how the elevation angle de
 with increasing stopping distance for different camera heights. These visualizations are
 helpful for understanding the relationship between obstacle size, distance, and camera
 view in applications such as obstacle detection and machine vision systems
-<<<<<<< HEAD
-=======
-
-Cuantos pixeles detectan los algoritmos de detecion de objetos en funcion de la distancia?
-(no deep learning 7pixeles)
-que tamaño debo ocupar en el sensor para que sea detectado? 
-Leer IFOV Y StoppingDistance
->>>>>>> 5cec7f2 (a)
 '''
 
 # Define variables
