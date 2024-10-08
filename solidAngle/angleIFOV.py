@@ -114,9 +114,9 @@ s_values = np.arange(1, 101)  # Stopping distances from 1 to 100 meters
 plt.figure(figsize=(8, 6))
 for hc in hc_values:
     angles = np.degrees(np.arctan(hc / s_values))  # Elevation angle in degrees
-    angles_approx = np.degrees(hc / s_values)  # Approximation
+    #angles_approx = np.degrees(hc / s_values)  # Approximation
     plt.plot(s_values, angles, linewidth=2, label=f'{hc} m')
-    plt.plot(s_values, angles_approx, linewidth=2, linestyle='--')
+    #plt.plot(s_values, angles_approx, linewidth=2, linestyle='--')
 
 plt.xscale('linear')
 plt.yscale('log')  # Logarithmic scale for Y-axis
@@ -127,6 +127,9 @@ plt.title('Elevation Angle vs Stopping Distance')
 
 # Add legend
 plt.legend(title="Camera Height [m]", loc='upper right')
+
+
+
 
 # Adjust layout and save
 plt.tight_layout()

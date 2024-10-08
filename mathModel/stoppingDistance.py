@@ -3,9 +3,12 @@ import matplotlib.pyplot as plt
 
 # Parameters
 
+mu = 0.3 # friction coefficient
+g = 9.81 # gravity; in meters/second^2
+
 t = 2 * 0.1 # perception time; in seconds
 l = 0.25 # latency; in seconds
-a = -3 # deceleration; in m/s^2
+a = - mu * g # deceleration; in m/s^2  (esto cambia dependiendo de la friccion)
 B = 2 # buffer; in m (security distance)
 
 # Stopping distance (Velocity rates)
@@ -52,15 +55,15 @@ for v in range(1, 151):
     d_look[v-1] = d_offset + d_per[v-1] + d_act[v-1] + d_brake[v-1] # in meters
 
 # Plot
-plt.plot(v_mph, d_look, linewidth=2, label='Stopping Distance [m] vT')
-plt.plot(v_mph, tdist, linewidth=2, label='Stopping distance [m] vSPIE')
+plt.plot(v_kph, d_look, linewidth=2, label='Stopping Distance [m] vT')
+plt.plot(v_kph, tdist, linewidth=2, label='Stopping distance [m] vSPIE')
 plt.grid(True)
-plt.xlabel('Vehicle speed [mph]')
+plt.xlabel('Vehicle speed [kph]')
 plt.ylabel('Lookahead distance [m]')
 plt.ylim(0, 800)
 plt.legend()
 plt.tight_layout()
-#plt.savefig('LookaheadDistanceForStoppingDistance(mph).png')
+plt.savefig('LookaheadDistanceForStoppingDistance(kph).png')
 plt.show()
 
 # Print the values of the stopping distance for a speed of 60 mph
@@ -79,11 +82,11 @@ plt.show()
 # Print the values in the txt file in the same directory (math-model)
 with open('Lookahead_Distance_For_Stopping.txt','w') as f:
     f.write('SPIE results' + '\n')
-    for x, y in zip(v_mph, tdist):
-        f.write('SPIE: Vehicle speed [mph]: ' + str(x) + ' -- Lookahead distance [m]: ' + str(y) + '\n')
+    for x, y in zip(v_kph, tdist):
+        f.write('SPIE: Vehicle speed [kph]: ' + str(x) + ' -- Lookahead distance [m]: ' + str(y) + '\n')
     f.write('vT results' + '\n')
-    for x, y in zip(v_mph, d_look):
-        f.write('vT: Vehicle speed [mph]: ' + str(x) + ' -- Lookahead distance [m]: ' + str(y) + '\n')
+    for x, y in zip(v_kph, d_look):
+        f.write('vT: Vehicle speed [kph]: ' + str(x) + ' -- Lookahead distance [m]: ' + str(y) + '\n')
 
 
 

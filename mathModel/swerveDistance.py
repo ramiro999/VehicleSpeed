@@ -10,7 +10,7 @@ v_mtps = v_mtph * (1 / 60**2) # speed in meters/second
 # Parameters for the model SPIE
 Tper = 0.1 # perception time; in seconds
 Tact = 0.25 # actuaction time (latency); in seconds
-a = -3 # deceleration; in m/s^2
+a = -9 # deceleration; in m/s^2
 mu = 0.55 # friction coefficient
 g = 9.81 # gravity acceleration; in meters/second^2
 d_offset = 2 # offset distance; in meters
@@ -56,25 +56,25 @@ for v in range(1, 151):
     d_look_swerve[v-1] =  d_offset + d_per[v-1] + d_act[v-1] + d_swerve[v-1] # in meters
 
 # Plot
-plt.plot(v_mph, d_look_stop, linewidth=2, label='Stopping Distance [m]')
-plt.plot(v_mph, d_look_swerve, linewidth=2, label='Swerve distance [m]')
+plt.plot(v_kph, d_look_stop, linewidth=2, label='Stopping Distance [m]')
+plt.plot(v_kph, d_look_swerve, linewidth=2, label='Swerve distance [m]')
 plt.grid(True)
-plt.xlabel('Vehicle speed [mph]')
+plt.xlabel('Vehicle speed [kph]')
 plt.ylabel('Lookahead distance [m]')
 plt.ylim(0, 800)
 plt.legend()
 plt.tight_layout()
-plt.savefig('Lookahead_Distance_For_Stopping_Distance(mph).png')
+plt.savefig('Lookahead_Distance_For_Stopping_Distance(kph).png')
 plt.show()
 
 # Print the values in the txt file in the same directory (math-model)
 with open('Lookahead_Distance_For_Swerve_Stop.txt','w') as f:
     f.write('Stopping Distance [m]' + '\n')
-    for x, y in zip(v_mph, d_look_stop):
-        f.write('SPIE: Vehicle speed [mph]: ' + str(x) + ' -- Lookahead distance [m]: ' + str(y) + '\n')
+    for x, y in zip(v_kph, d_look_stop):
+        f.write('SPIE: Vehicle speed [kph]: ' + str(x) + ' -- Lookahead distance [m]: ' + str(y) + '\n')
     f.write('Swerve distance [m]' + '\n')
-    for x, y in zip(v_mph, d_look_swerve):
-        f.write('vT: Vehicle speed [mph]: ' + str(x) + ' -- Lookahead distance [m]: ' + str(y) + '\n')
+    for x, y in zip(v_kph, d_look_swerve):
+        f.write('vT: Vehicle speed [kph]: ' + str(x) + ' -- Lookahead distance [m]: ' + str(y) + '\n')
 
 
 
