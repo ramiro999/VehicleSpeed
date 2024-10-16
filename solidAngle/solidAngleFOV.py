@@ -1,6 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+"""
+Solid Angle and Field of View (FOV) calculations for a camera system.
+The code calculates and visualizes the solid angle, etendue, field of view (FOV),
+instantaneous field of view (IFOV), depth of field (DOF), and ground sampling distance (GSD)
+for a camera system. These parameters are essential for understanding the camera's.
+"""
+
 # Sensor parameters
 A = (100e-6) ** 2  # Area (m^2) of cold f-stop (slit/aperture)
 f_number = 2.29  # f-number of optical system

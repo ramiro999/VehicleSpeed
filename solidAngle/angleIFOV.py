@@ -128,9 +128,6 @@ plt.title('Elevation Angle vs Stopping Distance')
 # Add legend
 plt.legend(title="Camera Height [m]", loc='upper right')
 
-
-
-
 # Adjust layout and save
 plt.tight_layout()
 plt.savefig('Elevation_Angle_vs_StoppingDistance.png', dpi=300)

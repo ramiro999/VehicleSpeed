@@ -1,6 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+"""
+Este modulo nos indica la relacion del AOV, IFOV, HAOV, VFOV con la velocidad del vehiculo 
+"""
+
 # Velocity rates 
 v_mph = np.arange(1, 101) # miles/hour
 v_kph = v_mph * (1.609/1) # km/hour
@@ -121,8 +125,8 @@ plt.yscale('log')
 #plt.savefig('IFOV_Positive_Negative_Degrees.png', dpi=300)
 plt.show()
 
-
-# Calculate the points per update (Points per Update)
+"""
+# Calculate the points per update (Points per Update) 
 ppuPh = HFOV / IFOVp
 ppuPv = VFOV / IFOVp
 ppuNh = HFOV / IFOVn
@@ -158,3 +162,5 @@ plt.yscale('log')
 plt.tight_layout()
 plt.savefig('ppuNh_Negatives.png', dpi=300)
 plt.show()
+
+"""

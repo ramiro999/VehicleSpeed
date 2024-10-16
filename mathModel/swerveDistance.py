@@ -75,7 +75,3 @@ with open('Lookahead_Distance_For_Swerve_Stop.txt','w') as f:
     f.write('Swerve distance [m]' + '\n')
     for x, y in zip(v_kph, d_look_swerve):
         f.write('vT: Vehicle speed [kph]: ' + str(x) + ' -- Lookahead distance [m]: ' + str(y) + '\n')
-
-
-
- 
