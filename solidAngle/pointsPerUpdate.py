@@ -68,26 +68,26 @@ VFOV = 2 * thetaSlope + np.minimum(thetaMin, thetaMax) # Vertical Field of View 
 
 # Plot FOV
 plt.figure()
-plt.plot(v_mph, HFOV * 10**3, linewidth=2, label= 'HFOV [miliradians]')
-plt.plot(v_mph, VFOV * 10**3, linewidth=2, label= 'VFOV [miliradians]')
+plt.plot(v_kph, HFOV * 10**3, linewidth=2, label= 'HFOV [miliradians]')
+plt.plot(v_kph, VFOV * 10**3, linewidth=2, label= 'VFOV [miliradians]')
 plt.xlabel('Vehicle speed [mph]')
 plt.ylabel('Field of View [miliradians]')
 plt.title('Field of View vs Vehicle Speed')
 plt.grid()
 plt.legend()
-#plt.savefig('HFOV_VFOV_Miliradians.png', dpi=300)
+plt.savefig('HFOV_VFOV_Miliradians.png', dpi=300)
 plt.show()
 
 # Plot FOV 2 
 plt.figure()
-plt.plot(v_mph, np.rad2deg(HFOV), linewidth=2, label= 'HFOV [degrees]')
-plt.plot(v_mph, np.rad2deg(VFOV), linewidth=2, label= 'VFOV [degrees]')
+plt.plot(v_kph, np.rad2deg(HFOV), linewidth=2, label= 'HFOV [degrees]')
+plt.plot(v_kph, np.rad2deg(VFOV), linewidth=2, label= 'VFOV [degrees]')
 plt.xlabel('Vehicle speed [mph]')
 plt.ylabel('Field of View [degrees]')
 plt.title('Field of View vs Vehicle Speed')
 plt.grid()
 plt.legend()
-#plt.savefig('HFOV_VFOV_Degrees.png', dpi=300)
+plt.savefig('HFOV_VFOV_Degrees.png', dpi=300)
 plt.show()
 
 # --------------- Compute IFOV (Instantaneous Field of View) ----------------
@@ -99,8 +99,8 @@ IFOVn = np.arctan(hc / lookahead_dist_stop) - np.arctan(hc / (lookahead_dist_sto
 
 # Plot IFOV positive and negative milidiarands
 plt.figure()
-plt.plot(v_mph, (IFOVp * 10**3), linewidth=2, label= 'IFOV Positive [miliradians]')
-plt.plot(v_mph, (IFOVn * 10**3), linewidth=2, label= 'IFOV Negative [miliradians]')
+plt.plot(v_kph, (IFOVp * 10**3), linewidth=2, label= 'IFOV Positive [miliradians]')
+plt.plot(v_kph, (IFOVn * 10**3), linewidth=2, label= 'IFOV Negative [miliradians]')
 plt.xlabel('Vehicle speed [mph]')
 plt.ylabel('Instantaneous Field of View [miliradians]')
 plt.title('Instantaneous Field of View vs Vehicle Speed')
@@ -108,13 +108,13 @@ plt.grid()
 plt.legend()
 plt.xscale('log')
 plt.yscale('log')
-#plt.savefig('IFOV_Positive_Negative.png', dpi=300)
+plt.savefig('IFOV_Positive_Negative.png', dpi=300)
 plt.show()
 
 # Plot IFOV positive and negative degrees
 plt.figure()
-plt.plot(v_mph, np.rad2deg(IFOVp), linewidth=2, label= 'IFOV Positive [degrees]')
-plt.plot(v_mph, np.rad2deg(IFOVn), linewidth=2, label= 'IFOV Negative [degrees]')
+plt.plot(v_kph, np.rad2deg(IFOVp), linewidth=2, label= 'IFOV Positive [degrees]')
+plt.plot(v_kph, np.rad2deg(IFOVn), linewidth=2, label= 'IFOV Negative [degrees]')
 plt.xlabel('Vehicle speed [mph]')
 plt.ylabel('Instantaneous Field of View [degrees]')
 plt.title('Instantaneous Field of View vs Vehicle Speed')
@@ -135,8 +135,8 @@ ppuNv = VFOV / IFOVn
 
 # Plot points per update for positive obstacles
 plt.figure()
-plt.plot(v_mph, ppuPh, linewidth=2, label='HFOV / IFOVp')
-plt.plot(v_mph, ppuPv, linewidth=2, label='VFOV / IFOVp')
+plt.plot(v_kph, ppuPh, linewidth=2, label='HFOV / IFOVp')
+plt.plot(v_kph, ppuPv, linewidth=2, label='VFOV / IFOVp')
 plt.xlabel('Vehicle speed [mph]')
 plt.ylabel('Points per update')
 plt.grid(True)
@@ -150,8 +150,8 @@ plt.show()
 
 # Plot points per update for negative obstacles
 plt.figure()
-plt.plot(v_mph, ppuNh, linewidth=2, label='HFOV / IFOVn')
-plt.plot(v_mph, ppuNv, linewidth=2, label='VFOV / IFOVn')
+plt.plot(v_kph, ppuNh, linewidth=2, label='HFOV / IFOVn')
+plt.plot(v_kph, ppuNv, linewidth=2, label='VFOV / IFOVn')
 plt.xlabel('Vehicle speed [mph]')
 plt.ylabel('Points per update')
 plt.grid(True)
