@@ -1,10 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-"""
-Este modulo nos indica la relacion del AOV, IFOV, HAOV, VFOV con la velocidad del vehiculo 
-"""
-
 # Velocity rates 
 v_mph = np.arange(1, 101) # miles/hour
 v_kph = v_mph * (1.609/1) # km/hour
@@ -68,11 +64,11 @@ VFOV = 2 * thetaSlope + np.minimum(thetaMin, thetaMax) # Vertical Field of View 
 
 # Plot FOV
 plt.figure()
-plt.plot(v_kph, HFOV * 10**3, linewidth=2, label= 'HFOV [miliradians]')
-plt.plot(v_kph, VFOV * 10**3, linewidth=2, label= 'VFOV [miliradians]')
-plt.xlabel('Vehicle speed [mph]')
-plt.ylabel('Field of View [miliradians]')
-plt.title('Field of View vs Vehicle Speed')
+plt.plot(v_kph, HFOV * 10**3, linewidth=2, label= 'HAOV [miliradians]')
+plt.plot(v_kph, VFOV * 10**3, linewidth=2, label= 'VAOV [miliradians]')
+plt.xlabel('Vehicle speed [kph]')
+plt.ylabel('Angle of View (AOV) [miliradians]')
+plt.title('Angle of View (AOV) vs Vehicle Speed')
 plt.grid()
 plt.legend()
 plt.savefig('HFOV_VFOV_Miliradians.png', dpi=300)
@@ -80,17 +76,18 @@ plt.show()
 
 # Plot FOV 2 
 plt.figure()
-plt.plot(v_kph, np.rad2deg(HFOV), linewidth=2, label= 'HFOV [degrees]')
-plt.plot(v_kph, np.rad2deg(VFOV), linewidth=2, label= 'VFOV [degrees]')
-plt.xlabel('Vehicle speed [mph]')
-plt.ylabel('Field of View [degrees]')
-plt.title('Field of View vs Vehicle Speed')
+plt.plot(v_kph, np.rad2deg(HFOV), linewidth=2, label= 'HAOV [degrees]')
+plt.plot(v_kph, np.rad2deg(VFOV), linewidth=2, label= 'VAOV [degrees]')
+plt.xlabel('Vehicle speed [kph]')
+plt.ylabel('Angle of View (AOV) [degrees]')
+plt.title('Angle of View (AOV) vs Vehicle Speed')
 plt.grid()
 plt.legend()
-plt.savefig('HFOV_VFOV_Degrees.png', dpi=300)
+plt.savefig('HAOV_VAOV_Degrees.png', dpi=300)
 plt.show()
 
 # --------------- Compute IFOV (Instantaneous Field of View) ----------------
+# Parameters (esto hace que el punto de inicio sea diferente para cada obstaculo)
 hp = 0.1 # Positive obstacle height (in meters)
 wn = 0.95 # Negative obstacle width (in meters)
 
@@ -101,7 +98,7 @@ IFOVn = np.arctan(hc / lookahead_dist_stop) - np.arctan(hc / (lookahead_dist_sto
 plt.figure()
 plt.plot(v_kph, (IFOVp * 10**3), linewidth=2, label= 'IFOV Positive [miliradians]')
 plt.plot(v_kph, (IFOVn * 10**3), linewidth=2, label= 'IFOV Negative [miliradians]')
-plt.xlabel('Vehicle speed [mph]')
+plt.xlabel('Vehicle speed [kph]')
 plt.ylabel('Instantaneous Field of View [miliradians]')
 plt.title('Instantaneous Field of View vs Vehicle Speed')
 plt.grid()
@@ -115,7 +112,7 @@ plt.show()
 plt.figure()
 plt.plot(v_kph, np.rad2deg(IFOVp), linewidth=2, label= 'IFOV Positive [degrees]')
 plt.plot(v_kph, np.rad2deg(IFOVn), linewidth=2, label= 'IFOV Negative [degrees]')
-plt.xlabel('Vehicle speed [mph]')
+plt.xlabel('Vehicle speed [kph]')
 plt.ylabel('Instantaneous Field of View [degrees]')
 plt.title('Instantaneous Field of View vs Vehicle Speed')
 plt.grid()
@@ -126,7 +123,7 @@ plt.yscale('log')
 plt.show()
 
 """
-# Calculate the points per update (Points per Update) 
+# Calculate the points per update (Points per Update)
 ppuPh = HFOV / IFOVp
 ppuPv = VFOV / IFOVp
 ppuNh = HFOV / IFOVn
@@ -162,5 +159,4 @@ plt.yscale('log')
 plt.tight_layout()
 plt.savefig('ppuNh_Negatives.png', dpi=300)
 plt.show()
-
 """
