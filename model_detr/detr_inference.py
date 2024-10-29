@@ -67,12 +67,15 @@ def plot_results(image, bboxes, labels, output_path, class_to_color):
         x0, y0 = (cx - w / 2) * image.width, (cy - h / 2) * image.height
         x1, y1 = (cx + w / 2) * image.width, (cy + h / 2) * image.height
 
+        # Obtener el color de la clase
+        color = class_to_color[COCO_INSTANCE_CATEGORY_NAMES[label]]
+
         # Dibujar el rectángulo y la etiqueta
         rect = plt.Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False, 
-                             edgecolor='blue', linewidth=2)
+                             edgecolor=color, linewidth=2)
         ax.add_patch(rect)
         ax.text(x0, y0, COCO_INSTANCE_CATEGORY_NAMES[label], fontsize=14, 
-                color='black', bbox=dict(facecolor='yellow', alpha=0.7))
+                color='black', bbox=dict(facecolor=color, alpha=0.7))
 
     ax.axis('off')  # Ocultar ejes
     plt.subplots_adjust(left=0, right=1, top=1, bottom=0)  # Ajustar márgenes
@@ -103,4 +106,4 @@ for image_name in os.listdir(image_folder):
 
     # Guardar resultados en la carpeta de salida
     output_path = os.path.join(output_folder, f'output_{image_name}')
-    plot_results(image, bboxes, labels, output_path)
+    plot_results(image, bboxes, labels, output_path, class_to_color)
