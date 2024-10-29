@@ -1,14 +1,15 @@
 import torch
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 import os
 import matplotlib.pyplot as plt
 from torchvision import transforms as T
+import numpy as np
 
-# load the pretrained DETR model
+# Cargar el modelo DETR preentrenado
 model = torch.hub.load('facebookresearch/detr', 'detr_resnet50', pretrained=True)
 model.eval()
 
-# COCO class labels
+# Nombres de las categorías de COCO
 COCO_INSTANCE_CATEGORY_NAMES = [
     '__background__', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
     'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'stop sign',
@@ -24,38 +25,61 @@ COCO_INSTANCE_CATEGORY_NAMES = [
     'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush'
 ]
 
-# image folder path
+# --------- Colores para las etiquetas ------------
+COLORS = [[0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
+          [0.494, 0.184, 0.556], [0.466, 0.674, 0.188], [0.301, 0.745, 0.933]]
+
+# Lista de clases excluyendo N/A
+filtered_classes = [cls for cls in COCO_INSTANCE_CATEGORY_NAMES if cls != 'N/A']
+num_classes = len(filtered_classes)
+
+# Crear una secuencia de colores RGB
+def generate_rgb_colors(num_colors):
+    np.random.seed(0) # Para reproducibilidad
+    colors = np.random.rand(num_colors, 3) # Generar colores aleatorios en RGB
+    return colors.tolist()
+
+COLORS = generate_rgb_colors(num_classes)
+
+class_to_color = {cls: COLORS[i] for i, cls in enumerate(filtered_classes)}
+print(class_to_color)
+
+
+# Ruta de la carpeta de imágenes
 image_folder = './prueba'
 
-# transform for input images
+# Transformación para las imágenes de entrada
 transform = T.Compose([
-    T.Resize((512, 512)),
+    T.Resize(512),  # Redimensionar manteniendo la relación de aspecto
     T.ToTensor(),
     T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
-# plot results
-def plot_results(image, bboxes, labels, output_path):
-    """Plot image with bounding boxes and labels and save it."""
-    plt.figure(figsize=(12, 8))
-    plt.imshow(image)
-    ax = plt.gca()
+# Función para mostrar y guardar resultados
+def plot_results(image, bboxes, labels, output_path, class_to_color):
+    """Mostrar la imagen con las bounding boxes y etiquetas, y guardarla."""
+    fig, ax = plt.subplots(figsize=(12, 8))
+    ax.imshow(image)
 
     for bbox, label in zip(bboxes, labels):
-        # Convert bbox from [cx, cy, w, h] to [x0, y0, x1, y1]
-        x0, y0, x1, y1 = bbox[0] - bbox[2] / 2, bbox[1] - bbox[3] / 2, \
-                         bbox[0] + bbox[2] / 2, bbox[1] + bbox[3] / 2
+        # Convertir bbox de [cx, cy, w, h] a [x0, y0, x1, y1]
+        cx, cy, w, h = bbox
+        x0, y0 = (cx - w / 2) * image.width, (cy - h / 2) * image.height
+        x1, y1 = (cx + w / 2) * image.width, (cy + h / 2) * image.height
 
-        # Draw rectangle and label
-        rect = plt.Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False, color='blue', linewidth=2)
-        ax.text(x0, y0, COCO_INSTANCE_CATEGORY_NAMES[label], fontsize=14, color='black',
-            bbox=dict(facecolor='yellow', alpha=0.7))
+        # Dibujar el rectángulo y la etiqueta
+        rect = plt.Rectangle((x0, y0), x1 - x0, y1 - y0, fill=False, 
+                             edgecolor='blue', linewidth=2)
+        ax.add_patch(rect)
+        ax.text(x0, y0, COCO_INSTANCE_CATEGORY_NAMES[label], fontsize=14, 
+                color='black', bbox=dict(facecolor='yellow', alpha=0.7))
 
-    plt.axis('off')
-    plt.savefig(output_path)  # Save the plot
-    plt.close()  # Close the figure to free memory
+    ax.axis('off')  # Ocultar ejes
+    plt.subplots_adjust(left=0, right=1, top=1, bottom=0)  # Ajustar márgenes
+    plt.savefig(output_path, bbox_inches='tight', pad_inches=0, dpi=300)  # Guardar imagen sin márgenes
+    plt.close(fig)  # Cerrar figura para liberar memoria
 
-# Example usage in the loop
+# Uso del modelo en bucle para procesar las imágenes
 output_folder = 'inference_outputs'
 os.makedirs(output_folder, exist_ok=True)
 
@@ -73,9 +97,10 @@ for image_name in os.listdir(image_folder):
 
     probas = outputs['pred_logits'].softmax(-1)[0, :, :-1]
     keep = probas.max(-1).values > 0.8
+
     bboxes = outputs['pred_boxes'][0, keep].numpy()
     labels = probas[keep].argmax(-1).numpy()
 
-    # Save plot to the output folder
+    # Guardar resultados en la carpeta de salida
     output_path = os.path.join(output_folder, f'output_{image_name}')
     plot_results(image, bboxes, labels, output_path)
