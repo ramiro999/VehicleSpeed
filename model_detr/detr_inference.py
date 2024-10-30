@@ -46,7 +46,7 @@ print(class_to_color)
 
 
 # Ruta de la carpeta de imágenes
-image_folder = './prueba'
+image_folder = '../dataset/testing/image_left'
 
 # Transformación para las imágenes de entrada
 transform = T.Compose([
